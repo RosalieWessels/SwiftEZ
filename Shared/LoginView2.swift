@@ -21,7 +21,7 @@ struct LoginView2: View {
         ZStack {
             
             if status == true {
-                ContentView()
+                ContentView(viewModel: ContentViewModel())
             }
             else {
                 LoginView(model: model)

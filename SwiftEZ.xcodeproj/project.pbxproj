@@ -24,6 +24,8 @@
 		1151FADC29980F7A00F902B9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151FADA29980F7A00F902B9 /* LoginView.swift */; };
 		1151FADE2998197800F902B9 /* LoginView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151FADD2998197800F902B9 /* LoginView2.swift */; };
 		1151FADF2998197800F902B9 /* LoginView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151FADD2998197800F902B9 /* LoginView2.swift */; };
+		1151FAE1299838ED00F902B9 /* ArtistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151FAE0299838EC00F902B9 /* ArtistView.swift */; };
+		1151FAE2299838ED00F902B9 /* ArtistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151FAE0299838EC00F902B9 /* ArtistView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,7 @@
 		1151FACC29980E1200F902B9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1151FADA29980F7A00F902B9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		1151FADD2998197800F902B9 /* LoginView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView2.swift; sourceTree = "<group>"; };
+		1151FAE0299838EC00F902B9 /* ArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +78,7 @@
 			children = (
 				1151FAAE299802B200F902B9 /* SwiftEZApp.swift */,
 				1151FAAF299802B200F902B9 /* ContentView.swift */,
+				1151FAE0299838EC00F902B9 /* ArtistView.swift */,
 				1151FADA29980F7A00F902B9 /* LoginView.swift */,
 				1151FADD2998197800F902B9 /* LoginView2.swift */,
 				1151FAB0299802B300F902B9 /* Assets.xcassets */,
@@ -212,6 +216,7 @@
 			files = (
 				1151FADB29980F7A00F902B9 /* LoginView.swift in Sources */,
 				1151FADE2998197800F902B9 /* LoginView2.swift in Sources */,
+				1151FAE1299838ED00F902B9 /* ArtistView.swift in Sources */,
 				1151FAC0299802B300F902B9 /* ContentView.swift in Sources */,
 				1151FABE299802B300F902B9 /* SwiftEZApp.swift in Sources */,
 			);
@@ -223,6 +228,7 @@
 			files = (
 				1151FADC29980F7A00F902B9 /* LoginView.swift in Sources */,
 				1151FADF2998197800F902B9 /* LoginView2.swift in Sources */,
+				1151FAE2299838ED00F902B9 /* ArtistView.swift in Sources */,
 				1151FAC1299802B300F902B9 /* ContentView.swift in Sources */,
 				1151FABF299802B300F902B9 /* SwiftEZApp.swift in Sources */,
 			);
