@@ -9,12 +9,14 @@ import SwiftUI
 import MapKit
 import Firebase
 import FirebaseFirestore
+import CoreLocation
 
 struct ContentView: View {
     var db = Firestore.firestore()
     @StateObject var viewModel: ContentViewModel
     @FocusState private var isFocusedTextField: Bool
     @State var finalAddress : AddressResult = AddressResult(title: "", subtitle: "")
+    @State var selectedAddress = "No address selected"
     var body: some View {
         ZStack {
 
@@ -29,7 +31,11 @@ struct ContentView: View {
                     .padding(.top, 0.0)
 
                 Spacer()
-                Spacer()
+                
+                Text(selectedAddress)
+                    .font(.system(size: 20, weight: .regular, design: .rounded))
+                    .foregroundColor(Color.white)
+                
                 Spacer()
 
                 TextField("Type address", text: $viewModel.searchableText)
@@ -68,12 +74,13 @@ struct ContentView: View {
                         .onTapGesture {
                             finalAddress = address
                             print("GOT FINAL ADDRESS", finalAddress)
+                            selectedAddress = finalAddress.title
                         }
                 }
                 .listStyle(.plain)
                 .padding(.horizontal)
 
-                Button(action: DoneButton){
+                Button(action: {DoneButton()}){
                     ZStack {
                         RoundedRectangle(cornerRadius: 5)
                             .foregroundColor(Color.gray)
@@ -93,15 +100,30 @@ struct ContentView: View {
         // Add a new document in collection "cities"
         let userEmail = Auth.auth().currentUser?.email
         print("user email", userEmail)
-        db.collection("users").document(userEmail!).setData([
-            "address": finalAddress
-        ]) { err in
-            if let err = err {
-                print("Error writing document: \(err)")
-            } else {
-                print("Document successfully written!")
+        
+        let fullAddress = finalAddress.title + " " + finalAddress.subtitle
+
+        var geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(finalAddress.title) { placemarks, error in
+            let placemark = placemarks?.first
+            let lat = placemark?.location?.coordinate.latitude
+            let lon = placemark?.location?.coordinate.longitude
+            print("Lat: \(lat), Lon: \(lon)")
+            
+            db.collection("users").document(userEmail!).setData([
+                "lat": lat!,
+                "lon" : lon!,
+                "address" : fullAddress
+            ]) { err in
+                if let err = err {
+                    print("Error writing document: \(err)")
+                } else {
+                    print("Document successfully written!")
+                }
             }
+
         }
+        
     }
 
 }
