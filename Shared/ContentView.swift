@@ -113,7 +113,9 @@ struct ContentView: View {
             db.collection("users").document(userEmail!).setData([
                 "lat": lat!,
                 "lon" : lon!,
-                "address" : fullAddress
+                "address" : fullAddress,
+                "userType" : "audience",
+                "email" : userEmail!
             ]) { err in
                 if let err = err {
                     print("Error writing document: \(err)")

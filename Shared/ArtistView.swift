@@ -7,6 +7,8 @@
 
 import SwiftUI
 import MapKit
+import Firebase
+
 
 struct Location: Identifiable {
     let id = UUID()
@@ -21,14 +23,15 @@ extension CLLocationCoordinate2D: Identifiable {
 }
 
 struct ArtistView: View {
+    var db = Firestore.firestore()
+    let mapView = MKMapView()
     
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), span: MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10))
+    @State var locationMarkersFinished = false
     
-    let annotations = [
-        Location(name: "London", coordinate: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275)),
-        Location(name: "Paris", coordinate: CLLocationCoordinate2D(latitude: 48.8567, longitude: 2.3508)),
-        Location(name: "Rome", coordinate: CLLocationCoordinate2D(latitude: 41.9, longitude: 12.5)),
-        Location(name: "Washington DC", coordinate: CLLocationCoordinate2D(latitude: 38.895111, longitude: -77.036667))
+    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.3852, longitude: -122.1141), span: MKCoordinateSpan(latitudeDelta: 2, longitudeDelta: 2))
+    
+    @State var annotations = [
+        Location(name: "London", coordinate: CLLocationCoordinate2D(latitude: 51.5072, longitude: 0.1276))
     ]
     
     var body: some View {
@@ -41,7 +44,7 @@ struct ArtistView: View {
                 ZStack {
                     VStack{
                         Text("Artist Analytics").font(.system(size: 40, weight: .bold, design: .rounded))
-                            .foregroundColor(.black)
+                            .foregroundColor(.white)
                             .padding(.bottom, 25.0)
                         Image("EraTour")
                             .resizable()
@@ -52,25 +55,56 @@ struct ArtistView: View {
                             .padding(.leading, -10.0)
                             .padding(.bottom, 40.0)
                             Text("Total Interested:").font(.system(size: 30, weight: .semibold, design: .rounded))
-                                .foregroundColor(.purple)
+                                .foregroundColor(.white)
                         Text("1,353,583").font(.system(size: 30, weight: .regular, design: .rounded))
-                            .foregroundColor(.gray)
+                            .foregroundColor(.white)
                     }
                     
                 }
-                Map(coordinateRegion: $region, annotationItems: annotations) {
-                    MapAnnotation(coordinate: $0.coordinate) {
-                        Circle()
-                            .strokeBorder(.red, lineWidth: 4)
-                            .frame(width: 40, height: 40)
-                    }
-                    
-                }.padding(/*@START_MENU_TOKEN@*/[.leading, .bottom, .trailing], 15.0/*@END_MENU_TOKEN@*/).frame(width: 400, height: 300)
+                if locationMarkersFinished == true {
+                    Map(coordinateRegion: $region, annotationItems: annotations) {
+                        MapAnnotation(coordinate: $0.coordinate) {
+                            Circle()
+                                //.strokeBorder(.black, lineWidth: 4)
+                                .fill(Color.black.opacity(0.25))
+                                .frame(width: 120, height: 120)
+                        }
+                        
+                    }.padding(/*@START_MENU_TOKEN@*/[.leading, .bottom, .trailing], 15.0/*@END_MENU_TOKEN@*/).frame(width: 400, height: 300)
+                }
+                
                 Color("AccentColor")
                     .ignoresSafeArea(.all)
             }
             .padding(.all, -100.0)
         }
+        .onAppear(perform: getLocations)
+    }
+    
+    func getLocations() {
+        db.collection("users").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    print("\(document.documentID) => \(document.data())")
+                    let email = document.get("email") as! String
+                    if email != "taylorswift@gmail.com" {
+                        let lat = document.get("lat") as! Double
+                        let lon = document.get("lon") as! Double
+                        var an = Location(name: "EmailInterest", coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lon))
+                        annotations.append(
+                            an
+                        )
+                        print("JUST ADDED NEW ANNOTATION")
+                    }
+                    //region.addAnnotation(an)
+                }
+            }
+        }
+        print("PUTTING ON MAP VIEW")
+        locationMarkersFinished = true
+        
     }
     
 //    struct ArtistView_Previews: PreviewProvider {

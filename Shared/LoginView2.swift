@@ -12,16 +12,31 @@ import Combine
 
 struct LoginView2: View {
     
+    var db = Firestore.firestore()
+    
     @AppStorage("log_Status") var status = DefaultStatus.status
     @State var user = Auth.auth().currentUser
     @StateObject var model = ModelData()
+    @State var userType = ""
+    let userEmail = Auth.auth().currentUser?.email
+    
+    init() {
+        checkStatus()
+    }
     
     var body: some View {
+        
         
         ZStack {
             
             if status == true {
-                ContentView(viewModel: ContentViewModel())
+                if userEmail!.lowercased() == "taylorswift@gmail.com" {
+                    ArtistView()
+                }
+                else {
+                    SearchView()
+                }
+                //ContentView(viewModel: ContentViewModel())
             }
             else {
                 LoginView(model: model)
@@ -29,17 +44,35 @@ struct LoginView2: View {
         }
         .background(Color("background").ignoresSafeArea())
         .navigationBarHidden(true)
-        .onAppear(perform: {
-            checkStatus()
-        })
+//        .onAppear(perform: {
+//
+//        })
         
     }
     
     func checkStatus() {
         if status == true {
             print("LOGGED IN IN DIFFERENT VEW")
+            print("userEmail", userEmail!)
         }
     }
+    
+//    func audienceOrArtist() {
+//        let userEmail = Auth.auth().currentUser?.email
+//        let docRef = db.collection("users").document(userEmail!)
+//
+//        docRef.getDocument { (document, error) in
+//            if let document = document, document.exists {
+//                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+//                print("Document data: \(dataDescription)")
+//                let userType = document.get("userType") as! String
+//                print("user Type", userType)
+//
+//            } else {
+//                print("Document does not exist")
+//            }
+//        }
+//    }
 }
 
 struct LogInScreen: View {

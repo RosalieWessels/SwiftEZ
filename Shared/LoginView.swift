@@ -13,6 +13,7 @@ struct LoginView: View {
     
     @ObservedObject var model : ModelData
     
+    
     var body: some View {
         NavigationView {
             ZStack {
